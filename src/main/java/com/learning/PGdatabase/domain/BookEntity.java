@@ -1,10 +1,7 @@
 package com.learning.PGdatabase.domain;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Data
 @NoArgsConstructor
@@ -16,6 +13,7 @@ public class BookEntity {
     @Id
     private String isbn;
 
+    @NonNull
     private String title;
 
     @ManyToOne (cascade = CascadeType.ALL)

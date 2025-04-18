@@ -118,13 +118,13 @@ public class BookControllerIntegrationTests {
         mockMvc.perform(
                 MockMvcRequestBuilders.get("/books")
         ).andExpect(
-                MockMvcResultMatchers.jsonPath("$", Matchers.hasSize(2))
+                MockMvcResultMatchers.jsonPath("$.content", Matchers.hasSize(2))
         ).andExpect(
-                MockMvcResultMatchers.jsonPath("$[0].isbn").isString()
+                MockMvcResultMatchers.jsonPath("$.content[0].isbn").isString()
         ).andExpect(
-                MockMvcResultMatchers.jsonPath("$[0].title").value(testBookEntity1.getTitle())
+                MockMvcResultMatchers.jsonPath("$.content[0].title").value(testBookEntity1.getTitle())
         ).andExpect(
-                MockMvcResultMatchers.jsonPath("$[0].author.id").isNumber()
+                MockMvcResultMatchers.jsonPath("$.content[0].author.id").isNumber()
         );
     }
 

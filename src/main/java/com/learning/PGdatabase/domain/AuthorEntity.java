@@ -15,7 +15,9 @@ public class AuthorEntity {
     @GeneratedValue (strategy = GenerationType.SEQUENCE, generator = "authors_seq")
     private Long id;
 
+    @NonNull
     private String name;
 
+    @NonNull
     private Integer age;
 }

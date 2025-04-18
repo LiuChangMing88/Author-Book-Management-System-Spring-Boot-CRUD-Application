@@ -1,8 +1,11 @@
 package com.learning.PGdatabase.controllers;
 
+import com.learning.PGdatabase.domain.AuthorEntity;
 import com.learning.PGdatabase.domain.BookEntity;
 import com.learning.PGdatabase.domain.DTO.BookDto;
+import com.learning.PGdatabase.mappers.impl.AuthorMapper;
 import com.learning.PGdatabase.mappers.impl.BookMapper;
+import com.learning.PGdatabase.services.AuthorService;
 import com.learning.PGdatabase.services.BookService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,11 +19,15 @@ import java.util.Optional;
 @RestController
 public class BookController {
     private final BookMapper bookMapper;
+    private final AuthorMapper authorMapper;
     private final BookService bookService;
+    private final AuthorService authorService;
 
-    public BookController(BookMapper bookMapper, BookService bookService) {
+    public BookController(BookMapper bookMapper, AuthorMapper authorMapper, BookService bookService, AuthorService authorService) {
         this.bookMapper = bookMapper;
+        this.authorMapper = authorMapper;
         this.bookService = bookService;
+        this.authorService = authorService;
     }
 
     @PutMapping(path = "/books/{isbn}")
@@ -33,6 +40,12 @@ public class BookController {
 
         // Check if book exists in the database
         boolean condition = bookService.exists(isbn);
+
+        // Check if author exists in the database
+        if (authorService.exists(bookEntity.getAuthor().getId())) {
+            Optional<AuthorEntity> existingAuthor = authorService.getAuthor(bookEntity.getAuthor().getId());
+            bookEntity.setAuthor(existingAuthor.get());
+        }
 
         // Save book
         BookEntity savedBookEntity = bookService.saveBook(isbn, bookEntity);
